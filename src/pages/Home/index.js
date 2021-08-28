@@ -1,7 +1,19 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import './home.scss'
 
 const Home = () => {
+  const [coronaIndo, setCoronaIndo] = useState()
+  useEffect(() => {
+    axios.get('https://dekontaminasi.com/api/id/covid19/stats')
+      .then(result => {
+        console.log(result)
+      })
+      .catch(e => {
+        console.log("data tidak berhasil diambil");
+      })
+  }, [])
+
   return (
     <div className="home">
       <h3 className='mb-5'>Situasi Virus Corona (COVID-19) di Indonesia</h3>

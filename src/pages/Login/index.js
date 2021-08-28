@@ -10,13 +10,13 @@ const Login = (props) => {
   const [error, setError] = useState()
   const history = useHistory()
 
-  const login = (event) => {
+  const login = async (event) => {
     const data = {
       username: username,
       password: password
     }
     event.preventDefault()
-    axios.post('http://localhost:4000/auth/login', data)
+    await axios.post('http://localhost:8000/auth/login', data)
       .then(result => {
         if (result) {
           if (result.data) {
@@ -59,11 +59,11 @@ const Login = (props) => {
               <form onSubmit={login}>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input type="email" className="form-control" id="email" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} />
+                  <input type="email" className="form-control" id="email" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value); setError('') }} />
+                  <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value); setError('') }} required />
                 </div>
                 <div className="form-group form-check">
                   <input type="checkbox" className="form-check-input" id="remember-me" />

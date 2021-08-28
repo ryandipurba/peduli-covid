@@ -1,11 +1,11 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { bg_register } from '../../assets'
 import './register.scss'
 
 const Register = () => {
-
+  const history = useHistory()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -13,7 +13,7 @@ const Register = () => {
   const [alert, setAlert] = useState('')
   const [error, setError] = useState()
 
-  const register = (event) => {
+  const register = async (event) => {
     const data = {
       name: name,
       username: username,
@@ -21,7 +21,7 @@ const Register = () => {
       password: password
     }
     event.preventDefault()
-    axios.post('http://localhost:4000/auth/register', data)
+    await axios.post('http://localhost:8000/auth/register', data)
       .then(result => {
         if (result) {
           if (result.data) {
@@ -32,7 +32,8 @@ const Register = () => {
             setName('')
             setTimeout(() => {
               setAlert('')
-            }, 3000)
+              history.push('/login')
+            }, 1000)
           }
         }
       })
@@ -72,19 +73,19 @@ const Register = () => {
               <form onSubmit={register}>
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
-                  <input type="text" className="form-control" id="name" value={name} onChange={(e) => { setName(e.target.value); setError('') }} />
+                  <input type="text" className="form-control" id="name" value={name} onChange={(e) => { setName(e.target.value); setError('') }} required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
-                  <input type="text" className="form-control" id="username" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} />
+                  <input type="text" className="form-control" id="username" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} minLength="6" required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input type="email" className="form-control" id="email" value={email} onChange={(e) => { setEmail(e.target.value); setError('') }} />
+                  <input type="email" className="form-control" id="email" value={email} onChange={(e) => { setEmail(e.target.value); setError('') }} required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value); setError('') }} />
+                  <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value); setError('') }} required minLength='8' />
                 </div>
                 <button type="submit" className="btn btn-primary btn-lg btn-block">Sign in</button>
               </form>
