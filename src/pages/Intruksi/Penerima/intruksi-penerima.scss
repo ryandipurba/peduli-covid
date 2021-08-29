@@ -1,0 +1,23 @@
+.intruksi{
+  ol{
+    li{
+      margin: 10px 0px;
+      span{
+        font-weight: bold;
+      }
+    }
+  }
+  button{
+    margin-bottom: 20px;
+    width: 250px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .intruksi {
+    button{
+      width: 100%;
+    }
+  }
+}

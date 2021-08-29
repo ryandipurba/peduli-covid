@@ -1,0 +1,40 @@
+.create-post{
+  p{
+    font-weight: bold;
+  }
+  input{
+    width: 50%;
+  }
+  textarea{
+    width: 50%;
+  }
+  .social-media{
+    display: flex;
+    width: 50%;
+  }
+  .form-userId{
+    display: none;
+  }
+  button{
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .create-post{
+    input{
+     width: 100%;
+    }
+    textarea{
+     width: 100%;
+    }
+    .social-media{
+      display: block;
+      width: 100%;
+    }
+    button{
+      width: 100%;
+    }
+  }
+}

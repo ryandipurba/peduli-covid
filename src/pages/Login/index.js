@@ -16,7 +16,7 @@ const Login = (props) => {
       password: password
     }
     event.preventDefault()
-    await axios.post('http://localhost:8000/auth/login', data)
+    await axios.post('https://peduli-covid-api.herokuapp.com/auth/login', data)
       .then(result => {
         if (result) {
           if (result.data) {
@@ -24,7 +24,8 @@ const Login = (props) => {
             setPassword('')
             setUsername('')
             // simpann token ke local storage
-            sessionStorage.setItem("token", result.data.token);
+            sessionStorage.setItem("token", result.data.token)
+            sessionStorage.setItem("userId", result.data.data.id)
             if (sessionStorage.token) {
               history.push("/");
               window.location.reload();
@@ -59,7 +60,7 @@ const Login = (props) => {
               <form onSubmit={login}>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input type="email" className="form-control" id="email" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} required />
+                  <input type="text" className="form-control" id="email" value={username} onChange={(e) => { setUsername(e.target.value); setError('') }} required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>

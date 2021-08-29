@@ -1,12 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { logo } from '../../assets'
 import './header.scss'
 
 const Header = () => {
+  const history = useHistory()
   const handleClearStorage = () => {
     if (sessionStorage.token) {
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userId");
+      history.push('/')
       window.location.reload();
     }
   }
@@ -23,12 +26,6 @@ const Header = () => {
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                   <Link className="nav-link active" to='/'>Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to='./pemeriksaan'>Pemeriksaan</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to='./pendataan-isman'>Pendataan Isman</Link>
                 </li>
                 <li>
                   <Link className="nav-link" to='/help'>Minta Bantuan</Link>

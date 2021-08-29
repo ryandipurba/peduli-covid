@@ -21,7 +21,7 @@ const Register = () => {
       password: password
     }
     event.preventDefault()
-    await axios.post('http://localhost:8000/auth/register', data)
+    await axios.post('https://peduli-covid-api.herokuapp.com/auth/register', data)
       .then(result => {
         if (result) {
           if (result.data) {

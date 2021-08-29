@@ -8,7 +8,7 @@ const RsRujukan = () => {
   const [hospitals, setHospitals] = useState([])
   const [searchKeyword, setSearchKeyword] = useState('')
   useEffect(() => {
-    axios.get('http://localhost:8000/info-penting/hospital')
+    axios.get('https://peduli-covid-api.herokuapp.com/info-penting/hospital')
       .then(result => {
         const data = result.data.data
         setHospitals(data)
