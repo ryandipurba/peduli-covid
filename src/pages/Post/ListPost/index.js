@@ -1,22 +1,30 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { loading } from '../../../assets'
 import { SearchBar } from '../../../components'
 
 const ListPost = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
   const [helpPost, setHelpPost] = useState([])
   const [searchKeyword, setSearchKeyword] = useState('')
 
+  const getPost = async () => {
+    try {
+      await axios.get('https://peduli-covid-api.herokuapp.com/help/post')
+        .then(result => {
+          const data = result.data.data
+          setHelpPost(data)
+          console.log(data);
+        })
+      setIsLoading(true)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
-    axios.get('https://peduli-covid-api.herokuapp.com/help/post')
-      .then(result => {
-        const data = result.data.data
-        setHelpPost(data)
-        console.log(data);
-      })
-      .catch(e => {
-        console.log("data tidak berhasil diambil");
-      })
+    getPost()
   }, [])
 
   const items = helpPost.filter((data) => {
@@ -44,7 +52,7 @@ const ListPost = () => {
       <p style={{ fontWeight: "bold" }} >Berikut daftar warga yang butuh dukungan finansialmu</p>
       <SearchBar keyword="seacrh by province" value={searchKeyword} onChange={(e) => { setSearchKeyword(e.target.value) }} />
       <div className="row m-0">
-        {items}
+        {isLoading ? items : <img src={loading} alt="loading" />}
       </div>
     </div>
   )

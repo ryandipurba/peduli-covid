@@ -1,22 +1,31 @@
 
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
+import { loading } from '../../assets';
 import { SearchBar } from '../../components';
 import './rs-rujukan.scss'
 
 const RsRujukan = () => {
   const [hospitals, setHospitals] = useState([])
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const getHospital = async () => {
+    try {
+      await axios.get('https://peduli-covid-api.herokuapp.com/info-penting/hospital')
+        .then(result => {
+          const data = result.data.data
+          setHospitals(data)
+          console.log(data);
+        })
+      setIsLoading(true)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
-    axios.get('https://peduli-covid-api.herokuapp.com/info-penting/hospital')
-      .then(result => {
-        const data = result.data.data
-        setHospitals(data)
-        console.log(data);
-      })
-      .catch(e => {
-        console.log("data tidak berhasil diambil");
-      })
+    getHospital()
   }, [])
 
   const items = hospitals.filter((data) => {
@@ -42,21 +51,23 @@ const RsRujukan = () => {
     <div>
       <p style={{ fontWeight: 'bold' }}>Daftar Rumah Sakit Rujukan COVID 19 di Indonesia</p>
       <SearchBar keyword="seacrh by province" value={searchKeyword} onChange={(e) => { setSearchKeyword(e.target.value) }} />
-      <div >
-        <table className="table table-striped table-hover table-responsive">
-          <thead>
-            <tr>
-              <th>Rumah Sakit</th>
-              <th>Alamat</th>
-              <th>Provinsi</th>
-              <th>Telepon</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items}
-          </tbody>
-        </table>
-      </div>
+      {isLoading ?
+        <div >
+          <table className="table table-striped table-hover table-responsive">
+            <thead>
+              <tr>
+                <th>Rumah Sakit</th>
+                <th>Alamat</th>
+                <th>Provinsi</th>
+                <th>Telepon</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items}
+            </tbody>
+          </table>
+        </div>
+        : <img src={loading} alt="loading" />}
     </div >
   )
 }
