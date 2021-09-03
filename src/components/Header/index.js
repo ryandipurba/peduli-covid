@@ -37,7 +37,7 @@ const Header = () => {
                   </Link>
                   <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><Link className="dropdown-item" to='/info-penting/rs-rujukan'>Daftar Rumah Sakit Rujukan</Link></li>
-                    <li><Link className="dropdown-item" to='/info-penting/list-seller-oxygent'>Daftar Penjual Tabung Oksigen</Link></li>
+                    {/* <li><Link className="dropdown-item" to='/info-penting/list-seller-oxygent'>Daftar Penjual Tabung Oksigen</Link></li> */}
                   </ul>
                 </li>
                 {

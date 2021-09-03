@@ -1,9 +1,58 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import { loading } from '../../assets'
 
 const Profile = () => {
+  const [helpPost, setHelpPost] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const history = useHistory()
+
+
+  const getPost = async () => {
+    try {
+      await axios.get('https://peduli-covid-api.herokuapp.com/help/posts')
+        .then(result => {
+          const data = result.data.data
+          setHelpPost(data)
+          console.log(data);
+        })
+
+      setIsLoading(true)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getPost()
+  }, [])
+
+  const items = helpPost.map(data => {
+    if (data.userId === sessionStorage.userId) {
+      return (
+        <div div className="card col-md-12 my-3" style={{ width: "18rem" }
+        } key={data._id} >
+          <div className="card-body">
+            <h5 className="card-title">{data.name} , {data.pekerjaan} , {data.alamat} - {data.provinsi} </h5>
+            <h6 className="card-subtitle mb-2 text-muted">{data.deskripsi}</h6>
+            <p className="card-text">kebutuhan Minimum : {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(data.kebutuhan)}</p>
+            <p className="card-text">Dana Terkumpul : {(data.terkumpul / data.kebutuhan) * 100}%</p>
+          </div>
+          <button className="btn btn-primary mx-3 mb-3 " style={{ width: "200px" }} onClick={() => history.push(`/help/post/${data._id}`)}>detail</button>
+        </div>
+      )
+    }
+  })
+
+
   return (
-    <div>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus repellat suscipit tenetur rem delectus vel quia dicta laudantium quisquam tempora magni accusamus, hic assumenda neque aspernatur? Itaque ducimus aspernatur quo.lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat excepturi cum aut quibusdam voluptates magni, corporis accusantium doloribus qui est repellat, tempore quasi totam optio provident inventore neque iure nostrum. Lorem ipsum dolor sit, amet consectetur adipisicissng elit. Consequatur quaerat vero est tenetur voluptatibus illo dolor, voluptatum voluptatem maiores, numquam sint excepturi quae, impedit reiciendis? Nam molestias voluptates dignissimos fuga. lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet enim inventore corporis doloremque aspernatur? Neque inventore debitis quaerat non eaque libero ad, dolorum ratione quibusdam, quam suscipit, ab sapiente facere.</p>
+    <div className="list-post">
+      <div className="row m-0">
+        <h3>Postingan Kamu</h3>
+        {isLoading ? items : <img src={loading} alt="loading" />}
+      </div>
     </div>
   )
 }

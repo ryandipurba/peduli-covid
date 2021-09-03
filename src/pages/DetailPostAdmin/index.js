@@ -1,7 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
 import { loading } from '../../assets' // Import css
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -9,7 +8,6 @@ import('./detail.scss')
 import('./detail.scss') // Import css
 
 const DetailPostAdmin = () => {
-  const history = useHistory()
   let { postid } = useParams()
   const [post, setPost] = useState([])
   const [isLoading, setIsLoading] = useState(false)

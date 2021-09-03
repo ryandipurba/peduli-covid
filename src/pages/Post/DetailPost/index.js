@@ -39,7 +39,7 @@ const DetailPost = () => {
         {
           label: 'Yes',
           onClick: () => {
-            axios.put(`https://peduli-covid-api.herokuapp.com/post/${id}`, data)
+            axios.put(`https://peduli-covid-api.herokuapp.com/help/post/${id}`, data)
               .then(result => {
                 console.log(result);
                 history.push('/help/post')
