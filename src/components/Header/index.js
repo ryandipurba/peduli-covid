@@ -13,6 +13,7 @@ const Header = () => {
       window.location.reload();
     }
   }
+
   return (
     <div className='container-fluid bg-light'>
       <div className="container">

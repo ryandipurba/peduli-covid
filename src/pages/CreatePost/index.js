@@ -7,7 +7,6 @@ const CreatePost = () => {
 
   const history = useHistory()
   const [image, setImage] = useState("");
-  const [urlImage, setUrlImage] = useState("");
   const [name, setName] = useState('')
   const [pekerjaan, setPekerjaan] = useState('')
   const [alamat, setAlamat] = useState('')
@@ -18,7 +17,8 @@ const CreatePost = () => {
   const [fb, setfb] = useState('')
   const [ig, setIg] = useState('')
 
-  const uploadImage = () => {
+  const uploadImage = (e) => {
+    e.preventDefault()
     const data = new FormData()
     data.append("file", image)
     data.append("upload_preset", "ftdg3u2e")
@@ -29,14 +29,14 @@ const CreatePost = () => {
     })
       .then(resp => resp.json())
       .then(data => {
+        handleSubmit(data.url)
         console.log(data.url)
-        setUrlImage(data.url)
       })
       .catch(err => console.log(err))
   }
 
-  const handleSubmit = async (event) => {
-    await uploadImage()
+  const handleSubmit = imgUrl => {
+    console.log('INI DATA UPLOAD ID', imgUrl)
     const data = {
       name: name,
       userId: sessionStorage.userId,
@@ -46,14 +46,13 @@ const CreatePost = () => {
       deskripsi: deskripsi,
       kebutuhan: kebutuhan,
       norek: norek,
-      image: urlImage,
+      image: imgUrl,
       sosmed: {
         fb: fb,
         ig: ig
       }
     }
-    event.preventDefault()
-    await axios.post('https://peduli-covid-api.herokuapp.com/help/create-post', data)
+    axios.post('https://peduli-covid-api.herokuapp.com/help/create-post', data)
       .then(result => {
         if (result) {
           if (result.data) {
@@ -64,14 +63,14 @@ const CreatePost = () => {
         }
       })
       .catch(e => {
-        console.log("eror");
+        console.log("eror")
       })
   }
 
   return (
     <div className="create-post">
       <p>Minta bantuan</p>
-      <form style={{ marginBottom: "50px" }} onSubmit={handleSubmit}>
+      <form style={{ marginBottom: "50px" }} onSubmit={uploadImage}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Nama</label>
           <input type="text" className="form-control" id="name" placeholder="name" required value={name} onChange={(e) => setName(e.target.value)} />
@@ -93,8 +92,8 @@ const CreatePost = () => {
           <textarea className="form-control" id="deskripsi" placeholder="deskripsi" required value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} />
         </div>
         <div className="mb-3">
-          <label htmlFor="kebutuhan" className="form-label">kebutuhan</label>
-          <textarea className="form-control" id="kebutuhan" placeholder="kebutuhan" required value={kebutuhan} onChange={(e) => setKebutuhan(e.target.value)} />
+          <label htmlFor="kebutuhan" className="form-label">Dana yang dibutuhkan</label>
+          <input type="number" className="form-control" id="kebutuhan" placeholder="dana yang dibutuhkan Rp." required value={kebutuhan} onChange={(e) => setKebutuhan(e.target.value)} />
         </div>
         <div className="mb-3">
           <label htmlFor="norek" className="form-label">Nomor E-Wallet Dana</label>
@@ -119,4 +118,3 @@ const CreatePost = () => {
 
 export default CreatePost
 
-// const { name, pekerjaan, alamat, provinsi, deskripsi, kebutuhan, norek, image, fb, ig, userId 

@@ -6,5 +6,7 @@ import Help from "./Help";
 import Profile from "./Profile";
 import Home from "./Home";
 import CreatePost from "./CreatePost";
+import ListPostAdmin from "./listPostAdmin";
+import DetailPostAdmin from "./DetailPostAdmin";
 
-export { Login, Register, RsRujukan, ListOxygenSeller, Help, Home, Profile, CreatePost }
+export { Login, Register, RsRujukan, ListOxygenSeller, Help, Home, Profile, CreatePost, ListPostAdmin, DetailPostAdmin }

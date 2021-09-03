@@ -18,7 +18,8 @@ const Register = () => {
       name: name,
       username: username,
       email: email,
-      password: password
+      password: password,
+      tipe: "user"
     }
     event.preventDefault()
     await axios.post('https://peduli-covid-api.herokuapp.com/auth/register', data)
@@ -53,7 +54,7 @@ const Register = () => {
           <div className="row justify-content-center">
             <div className="col-md-8">
               <div>
-                <h3>Sign in</h3>
+                <h3>Sign Up</h3>
                 <p>Let's join on this website right now!</p>
               </div>
               {
@@ -87,7 +88,7 @@ const Register = () => {
                   <label htmlFor="password">Password</label>
                   <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value); setError('') }} required minLength='8' />
                 </div>
-                <button type="submit" className="btn btn-primary btn-lg btn-block">Sign in</button>
+                <button type="submit" className="btn btn-primary btn-lg btn-block">Sign Up</button>
               </form>
               <div className="mt-4">
                 <p className='mt-3'>already have an account?  <Link to='/login' className='font-weight-bold text-decoration-none text-dark'>Log in </Link></p>

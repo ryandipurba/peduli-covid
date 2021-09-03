@@ -1,17 +1,17 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { loading } from '../../../assets'
 import { useHistory } from 'react-router-dom'
+import { loading } from '../../assets' // Import css
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import('./detail.scss')
 import('./detail.scss') // Import css
 
-const DetailPost = () => {
+const DetailPostAdmin = () => {
   const history = useHistory()
   let { postid } = useParams()
   const [post, setPost] = useState([])
-  const [donasi, setDonasi] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
   const getPost = async () => {
@@ -28,21 +28,22 @@ const DetailPost = () => {
     }
   }
 
-  const Submitdonasi = async (id) => {
+  const publish = async (id) => {
     const data = {
-      donasi: donasi
+      admin: "admin"
     }
     confirmAlert({
-      title: 'Confirm to Donation',
-      message: 'do you want to continue this donation',
+      title: 'Confirm to publish',
+      message: 'do you want to continue publish this post',
       buttons: [
         {
           label: 'Yes',
           onClick: () => {
-            axios.put(`https://peduli-covid-api.herokuapp.com/post/${id}`, data)
+            axios.put(`https://peduli-covid-api.herokuapp.com/help/post/${id}`, data)
               .then(result => {
                 console.log(result);
-                history.push('/help/post')
+                getPost()
+                setIsLoading(true)
               })
               .catch(err => {
                 console.log("eror :", err);
@@ -56,6 +57,7 @@ const DetailPost = () => {
       ]
     });
   }
+
   useEffect(() => {
     getPost()
   }, [])
@@ -75,17 +77,16 @@ const DetailPost = () => {
           </div>
           <div className="col-md-6">
             <p>Kebutuhan : {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(post.kebutuhan)}</p>
+
             <p>Dana Terkumpul : {((post.terkumpul / post.kebutuhan) * 100).toFixed(1)}%</p>
             <p>No E-Wallet : {post.norek}</p>
-            <p style={{ fontWeight: 'bold' }}>Cara Mengirim Dana</p>
-            <p className="text-justify">anda dapat melakukan pembayaran dengan mengirim melalui nomor e-wallet yang tertera. jika sudah melakukan pembayaran. <br /> <b>masukan jumlah dana yang dikirim</b></p>
-            <div className="input-group mb-3 input-nominal">
-              <span className="input-group-text">Rp</span>
-              <input type="number" className="form-control" aria-label="Amount Rupiah" value={donasi} onChange={(e) => { setDonasi(e.target.value) }} />
-              <span className="input-group-text">.00</span>
-              <p className="text-danger form-text">*Pastikan jumlah yang kamu kirim sama dengan yang tertera disini, penting untuk keperluan tracking dana.</p>
-            </div>
-            <button className="btn btn-primary mb-3 " style={{ width: "200px" }} onClick={() => Submitdonasi(post._id, donasi)}>Donasi</button>
+            {post.status ?
+              <div className="alert alert-primary" role="alert">
+                Post sudah di publish
+              </div>
+              :
+              <button className="btn btn-primary mb-3 " style={{ width: "200px" }} onClick={() => publish(post._id)}>Publish</button>}
+
           </div>
         </div>
         : <img src={loading} alt="loading" />}
@@ -93,4 +94,4 @@ const DetailPost = () => {
   )
 }
 
-export default DetailPost
+export default DetailPostAdmin

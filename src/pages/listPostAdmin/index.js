@@ -1,15 +1,17 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { loading } from '../../../assets'
-import { SearchBar } from '../../../components'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { loading } from '../../assets';
+import { SearchBar } from '../../components';
 
 
-const ListPost = () => {
+const ListPostAdmin = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [helpPost, setHelpPost] = useState([])
-  const [searchKeyword, setSearchKeyword] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState(null)
   const history = useHistory()
 
 
@@ -28,6 +30,33 @@ const ListPost = () => {
     }
   }
 
+
+  const deletePost = (id) => {
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            axios.delete(`https://peduli-covid-api.herokuapp.com/help/post/${id}`)
+              .then(result => {
+                console.log(result);
+                getPost()
+              })
+              .catch(err => {
+                console.log("eror :", err);
+              })
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => console.log("user tidak setuju")
+        }
+      ]
+    });
+  }
+
   useEffect(() => {
     getPost()
   }, [])
@@ -39,7 +68,7 @@ const ListPost = () => {
       return data
     }
     return false
-  }).filter(data => data.status === true).map(data => {
+  }).map(data => {
     return (
       <div className="card col-md-12 my-3" style={{ width: "18rem" }} key={data._id}>
         <div className="card-body">
@@ -48,20 +77,23 @@ const ListPost = () => {
           <p className="card-text">kebutuhan Minimum : {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(data.kebutuhan)}</p>
           <p className="card-text">Dana Terkumpul : {(data.terkumpul / data.kebutuhan) * 100}%</p>
         </div>
-        <button className="btn btn-primary mx-3 mb-3 " style={{ width: "200px" }} onClick={() => history.push(`/help/post/${data._id}`)}>Beri Bantuan</button>
+        <div>
+          <button button className="btn btn-primary mx-3 mb-3 " style={{ width: "200px" }} onClick={() => history.push(`/help/admin/post/${data._id}`)}>update</button>
+          <button button className="btn btn-danger mx-3 mb-3 " style={{ width: "200px" }} onClick={() => deletePost(data._id)}>Delete</button>
+        </div>
       </div >
     )
   })
 
   return (
-    <div className="list-post">
+    <div className="list-post" >
       <p style={{ fontWeight: "bold" }} >Berikut daftar warga yang butuh dukungan finansialmu</p>
       <SearchBar keyword="seacrh by province" value={searchKeyword} onChange={(e) => { setSearchKeyword(e.target.value) }} />
       <div className="row m-0">
         {isLoading ? items : <img src={loading} alt="loading" />}
       </div>
-    </div>
+    </div >
   )
 }
 
-export default ListPost
+export default ListPostAdmin

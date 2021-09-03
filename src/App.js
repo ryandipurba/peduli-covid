@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Header, Footer } from './components/';
-import { CreatePost, Help, Home, ListOxygenSeller, Login, Profile, Register, RsRujukan } from './pages';
+import HeeaderAdmin from './components/HeaderAdmin';
+import { CreatePost, Help, Home, ListOxygenSeller, ListPostAdmin, Login, Profile, Register, RsRujukan, DetailPostAdmin } from './pages';
 import { IntruksiDonatur, IntruksiPenerima } from './pages/Intruksi';
 import { DetailPost, ListPost } from './pages/Post';
 
@@ -9,7 +10,11 @@ function App() {
   return (
     <div className="">
       <Router>
-        <Header />
+        {(sessionStorage.userId === "61310c0f6df592cc30eb4857") ?
+          <HeeaderAdmin />
+          :
+          <Header />
+        }
         <div className="container p-5">
           <Switch>
             <Route path="/login" component={Login} />
@@ -24,6 +29,8 @@ function App() {
             <Route path="/help/create-post" component={CreatePost} />
             <Route path="/help/post/:postid" component={DetailPost} />
             <Route path="/help/post/" component={ListPost} />
+            <Route path="/help/admin/posts" component={ListPostAdmin} />
+            <Route path="/help/admin/post/:postid" component={DetailPostAdmin} />
           </Switch>
         </div>
         <Footer />
