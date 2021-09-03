@@ -46,7 +46,7 @@ const ListPost = () => {
           <h5 className="card-title">{data.name} , {data.pekerjaan} , {data.alamat} - {data.provinsi} </h5>
           <h6 className="card-subtitle mb-2 text-muted">{data.deskripsi}</h6>
           <p className="card-text">kebutuhan Minimum : {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(data.kebutuhan)}</p>
-          <p className="card-text">Dana Terkumpul : {(data.terkumpul / data.kebutuhan) * 100}%</p>
+          <p className="card-text">Dana Terkumpul : {((data.terkumpul / data.kebutuhan) * 100).toFixed(1)}%%</p>
         </div>
         <button className="btn btn-primary mx-3 mb-3 " style={{ width: "200px" }} onClick={() => history.push(`/help/post/${data._id}`)}>Beri Bantuan</button>
       </div >

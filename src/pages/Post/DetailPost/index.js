@@ -30,6 +30,7 @@ const DetailPost = () => {
 
   const Submitdonasi = async (id) => {
     const data = {
+      admin: "No",
       donasi: donasi
     }
     confirmAlert({

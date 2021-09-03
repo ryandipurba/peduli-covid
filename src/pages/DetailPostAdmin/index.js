@@ -28,7 +28,8 @@ const DetailPostAdmin = () => {
 
   const publish = async (id) => {
     const data = {
-      admin: "admin"
+      admin: "admin",
+      donasi: 0
     }
     confirmAlert({
       title: 'Confirm to publish',
